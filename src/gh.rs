@@ -26,7 +26,7 @@ pub fn check_repo_context() -> Result<String> {
     if !out.status.success() {
         let stderr = String::from_utf8_lossy(&out.stderr);
         bail!(
-            "could not resolve repo from current directory — run `workstatus` inside a repo linked to GitHub (gh auth login / git remote add origin ...).\n{stderr}"
+            "could not resolve repo from current directory — run `prq` inside a repo linked to GitHub (gh auth login / git remote add origin ...).\n{stderr}"
         );
     }
     Ok(String::from_utf8_lossy(&out.stdout).trim().to_string())

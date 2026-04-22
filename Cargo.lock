@@ -1079,6 +1079,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "prq"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "clap",
+ "crossterm",
+ "humantime",
+ "open",
+ "ratatui",
+ "serde",
+ "serde_json",
+ "textwrap",
+]
+
+[[package]]
 name = "quote"
 version = "1.0.45"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2025,22 +2041,6 @@ dependencies = [
  "serde_json",
  "unicode-xid",
  "wasmparser",
-]
-
-[[package]]
-name = "workstatus"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "chrono",
- "clap",
- "crossterm",
- "humantime",
- "open",
- "ratatui",
- "serde",
- "serde_json",
- "textwrap",
 ]
 
 [[package]]

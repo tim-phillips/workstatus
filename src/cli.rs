@@ -2,7 +2,7 @@ use clap::Parser;
 
 #[derive(Debug, Parser)]
 #[command(
-    name = "workstatus",
+    name = "prq",
     version,
     about = "A terminal UI for browsing open PRs and their review/check status."
 )]

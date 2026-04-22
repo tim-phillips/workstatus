@@ -1,6 +1,6 @@
-# workstatus
+# prq
 
-A terminal UI for browsing the open pull requests on a GitHub repo and seeing, at a glance, which ones need your attention. `workstatus` shells out to the GitHub CLI (`gh`) so it uses the same auth and repo context you already have.
+**prq** (_PR Queue_) is a terminal UI for browsing the open pull requests on a GitHub repo and seeing, at a glance, which ones need your attention. It shells out to the GitHub CLI (`gh`) so it uses the same auth and repo context you already have.
 
 ## Requirements
 
@@ -25,7 +25,7 @@ cargo run --release
 Run it from inside the repo you want to inspect:
 
 ```sh
-workstatus
+prq
 ```
 
 On startup it verifies `gh` is installed, resolves the repo with `gh repo view`, and begins loading open PRs in the background.
@@ -41,7 +41,7 @@ On startup it verifies `gh` is installed, resolves the repo with `gh repo view`,
 Example:
 
 ```sh
-workstatus --limit 30 --refresh-interval 30
+prq --limit 30 --refresh-interval 30
 ```
 
 ## The interface
@@ -49,7 +49,7 @@ workstatus --limit 30 --refresh-interval 30
 The screen is split into three zones:
 
 ```
-workstatus · owner/repo · 12 open PR(s) · refreshed 14s ago        ← header
+prq · owner/repo · 12 open PR(s) · refreshed 14s ago               ← header
 ┌───────────────────────────────────────────────────────────────┐
 │  #    Me  R  C  Title                       Author  Branch    │  ← body:
 │  101      ✓  ✓  Refactor auth middleware    alice   auth-rfc  │    list or
@@ -158,5 +158,5 @@ Pressing `Enter` on a PR opens a detail view with:
 ## Troubleshooting
 
 - **``failed to invoke `gh` ``/`` `gh --version` failed ``** — the GitHub CLI isn't installed or isn't on `PATH`. Install it from <https://cli.github.com>.
-- **`could not resolve repo from current directory`** — run `workstatus` inside a git repo that has a GitHub remote, and make sure `gh auth login` has been completed.
+- **`could not resolve repo from current directory`** — run `prq` inside a git repo that has a GitHub remote, and make sure `gh auth login` has been completed.
 - **Footer shows a red `error: ...`** — the most recent `gh` invocation failed. The previous data stays on screen; press `r` to retry.

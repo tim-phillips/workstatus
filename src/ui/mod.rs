@@ -41,7 +41,7 @@ fn draw_header(frame: &mut Frame<'_>, area: Rect, app: &App) {
         None if app.loading_list => "loading…".to_string(),
         None => "—".to_string(),
     };
-    let title = format!("workstatus · {} · {count} open PR(s) · {refreshed}", app.repo);
+    let title = format!("prq · {} · {count} open PR(s) · {refreshed}", app.repo);
     let para = Paragraph::new(title).style(Style::default().add_modifier(Modifier::BOLD));
     frame.render_widget(para, area);
 }
