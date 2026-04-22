@@ -350,10 +350,12 @@ impl PrDetail {
 
 pub fn parse_pr_list(json: &str, viewer: Option<&str>) -> anyhow::Result<Vec<PrSummary>> {
     let raws: Vec<RawPr> = serde_json::from_str(json)?;
-    Ok(raws
+    let mut prs: Vec<PrSummary> = raws
         .iter()
         .map(|r| PrSummary::from_raw(r, viewer))
-        .collect())
+        .collect();
+    prs.sort_by(|a, b| b.updated_at.cmp(&a.updated_at));
+    Ok(prs)
 }
 
 pub fn parse_pr_detail(json: &str, viewer: Option<&str>) -> anyhow::Result<PrDetail> {
@@ -373,8 +375,12 @@ mod tests {
         let prs = parse_pr_list(LIST_FIXTURE, Some("tim")).unwrap();
         assert_eq!(prs.len(), 4);
 
-        let approved = &prs[0];
-        assert_eq!(approved.number, 101);
+        assert_eq!(
+            prs.iter().map(|p| p.number).collect::<Vec<_>>(),
+            vec![103, 101, 104, 102]
+        );
+
+        let approved = prs.iter().find(|p| p.number == 101).unwrap();
         assert_eq!(approved.review, ReviewState::Approved);
         assert_eq!(approved.checks.overall, Some(CheckState::Pass));
         assert_eq!(approved.checks.passing, 2);
@@ -383,20 +389,20 @@ mod tests {
         assert_eq!(approved.mergeable, Mergeable::Mergeable);
         assert_eq!(approved.my_review, MyReviewState::Approved);
 
-        let changes = &prs[1];
+        let changes = prs.iter().find(|p| p.number == 102).unwrap();
         assert_eq!(changes.review, ReviewState::ChangesRequested);
         assert_eq!(changes.checks.overall, Some(CheckState::Fail));
         assert_eq!(changes.checks.failing, 1);
         assert_eq!(changes.checks.passing, 1);
         assert_eq!(changes.my_review, MyReviewState::WaitingOnAuthor);
 
-        let pending = &prs[2];
+        let pending = prs.iter().find(|p| p.number == 103).unwrap();
         assert_eq!(pending.review, ReviewState::ReviewRequired);
         assert_eq!(pending.checks.overall, Some(CheckState::Pending));
         assert!(pending.checks.pending >= 1);
         assert_eq!(pending.my_review, MyReviewState::ReviewRequested);
 
-        let draft = &prs[3];
+        let draft = prs.iter().find(|p| p.number == 104).unwrap();
         assert!(draft.is_draft);
         assert_eq!(draft.review, ReviewState::None);
         assert_eq!(draft.checks.overall, None);
